@@ -4,7 +4,6 @@ import ahz.scripts.widgets.AHZDefines.AHZVanillaFrames;
 import flash.display.BitmapData;
 import flash.filters.DropShadowFilter;
 import mx.managers.DepthManager;
-import gfx.io.GameDelegate;
 
 class ahz.scripts.widgets.AHZmoreHUDInventory extends MovieClip
 {
@@ -408,20 +407,8 @@ class ahz.scripts.widgets.AHZmoreHUDInventory extends MovieClip
 		initializeClips();
 	}
 
-	function SetPlayerInfo(): Void
-	{
-		_global.skse.plugins.AHZmoreHUDInventory.AHZLog("SetPlayerInfo", false);
-		for (var i: Number = 0 ; i < 15; i++)
-		{
-			_global.skse.plugins.AHZmoreHUDInventory.AHZLog("arguments[" + i +  "]: " + arguments[i], false);
-		}
-	}
-
 	function clipReady():Void
 	{
-		_global.skse.plugins.AHZmoreHUDInventory.AHZLog("RequestPlayerInfo", false);
-		GameDelegate.call("RequestPlayerInfo", [], this, "SetPlayerInfo");
-		
 		if (!LoadedLargeItemCard_mc)
 		{
 			LoadedLargeItemCard_mc = ICBackground_mc;
