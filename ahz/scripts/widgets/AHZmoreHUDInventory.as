@@ -62,7 +62,7 @@ class ahz.scripts.widgets.AHZmoreHUDInventory extends MovieClip
 	private static var AHZ_NormalALPHA:Number = 60;
 	private static var AHZ_IconsFile:String = 'moreHUDIE/baseIcons.swf'
 	private static var AHZ_ItemCardFile:String = 'moreHUDIE/baseLargeItemCard.swf'
-	
+	private static var AHZ_ItemCardMoved = false;
 	
 	
 
@@ -385,6 +385,12 @@ class ahz.scripts.widgets.AHZmoreHUDInventory extends MovieClip
 			
 		if (!_config[AHZDefines.CFG_ICON_TEXT_FIELD_COLOR])
 			_config[AHZDefines.CFG_ICON_TEXT_FIELD_COLOR] = '#999999';
+			
+		if (!_config[AHZDefines.CFG_LIC_PARENT_XOFFSET])
+			_config[AHZDefines.CFG_LIC_PARENT_XOFFSET] = 60;				
+			
+		if (!_config[AHZDefines.CFG_LIC_CRAFTIING_PARENT_XOFFSET])
+			_config[AHZDefines.CFG_LIC_CRAFTIING_PARENT_XOFFSET] = 0;
 	}
 
 	function configLoaded(event:Object):Void
@@ -589,6 +595,23 @@ class ahz.scripts.widgets.AHZmoreHUDInventory extends MovieClip
 
 	function ItemCardOnEnterFrame(): Void
 	{
+		// This is super clunky, but we have to wait until the card fades all the way in
+		// before trying to move it.  Otherwise it disapears.
+		// And this really only effects the "InventoryMenu"
+		if (_enableItemCardResize && !AHZ_ItemCardMoved && itemCard._alpha == 100)
+		{
+			if (_currentMenu == "Crafting Menu"){
+				itemCard._x += _config[AHZDefines.CFG_LIC_CRAFTIING_PARENT_XOFFSET];
+			}
+			else{
+				itemCard._x += _config[AHZDefines.CFG_LIC_PARENT_XOFFSET];
+			}
+			
+			// Make sure it only happens once
+			AHZ_ItemCardMoved = true;
+		}		
+		
+		
 		var itemCardVisible:Boolean = (itemCard._alpha > 0 && rootMenuInstance._alpha == 100);
 		if (itemCardVisible)
 		{
